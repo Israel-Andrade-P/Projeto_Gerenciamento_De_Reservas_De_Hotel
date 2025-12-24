@@ -1,13 +1,12 @@
 package repository;
 
-import constants.Constants;
 import exception.ReservaNotFoundException;
 import model.Reserva;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static constants.Constants.*;
+import static constants.Constants.RESERVA_NAO_ENCONTRADA;
 
 public class ReservaRepository {
     private List<Reserva> reservas;

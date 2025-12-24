@@ -7,21 +7,25 @@ import repository.ReservaRepository;
 import java.util.List;
 
 public class ReservaService {
-    ReservaRepository repository = new ReservaRepository();
+    private ReservaRepository reservaRepository;
+
+    public ReservaService(ReservaRepository reservaRepository) {
+        this.reservaRepository = reservaRepository;
+    }
 
     public void addReserva(Reserva reserva) {
         if (!ValidarReserva(reserva)) {
             throw new InvalidReservaException("Reserva tem que ter pelo menos uma diária");
         }
-        repository.saveReserva(reserva);
+        reservaRepository.saveReserva(reserva);
     }
 
     public void cancelaReserva(String reservaId) {
-        repository.deleteById(reservaId);
+        reservaRepository.deleteById(reservaId);
     }
 
     public List<Reserva> pegarReservasPorCpf(String cpf) {
-        return repository.findByCpf(cpf);
+        return reservaRepository.findByCpf(cpf);
     }
 
     private boolean ValidarReserva(Reserva reserva) {
