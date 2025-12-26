@@ -41,4 +41,15 @@ public class HospedeRepository implements Repository<Hospede, String> {
     public List<Hospede> findAll(String s) {
         return hospedes;
     }
+
+    @Override
+    public List<Hospede> findAll() {
+        return hospedes;
+    }
+
+    @Override
+    public boolean existsById(String cpf) {
+        return hospedes.stream()
+                .anyMatch(h -> h.getCpf().equals(cpf));
+    }
 }

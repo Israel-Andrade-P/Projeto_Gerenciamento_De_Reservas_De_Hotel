@@ -8,4 +8,6 @@ public interface Repository<T, ID> {
     void deleteById(ID id);
     T findById(ID id);
     List<T> findAll(ID id);
+    List<T> findAll();
+    boolean existsById(ID id);
 }

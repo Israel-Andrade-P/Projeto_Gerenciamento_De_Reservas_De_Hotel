@@ -43,6 +43,16 @@ public class ReservaRepository implements Repository<Reserva, String> {
         return reservas.stream().filter(reserva -> reserva.getHospede().getCpf().equals(cpf)).toList();
     }
 
+    @Override
+    public List<Reserva> findAll() {
+        return reservas;
+    }
+
+    @Override
+    public boolean existsById(String id) {
+        return reservas.stream().anyMatch(reserva -> reserva.getId().equals(id));
+    }
+
     public int getCapacity() {
         return capacity;
     }

@@ -42,6 +42,10 @@ public class ReservaService {
         return reservas;
     }
 
+    public List<Reserva> pegarTodas() {
+        return reservaRepository.findAll();
+    }
+
     private boolean ValidarReserva(Reserva reserva) {
         return reserva.getNumeroDias() > 0;
     }

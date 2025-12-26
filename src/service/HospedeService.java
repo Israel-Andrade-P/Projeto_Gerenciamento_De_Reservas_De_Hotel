@@ -1,8 +1,12 @@
 package service;
 
-import exception.HospedeNotFoundException;
+import exception.HospedeAlreadyExistsException;
 import model.Hospede;
 import repository.Repository;
+
+import java.util.List;
+
+import static constants.Constants.HOSPEDE_JA_EXISTE;
 
 public class HospedeService {
     private final Repository<Hospede, String> hospedeRepository;
@@ -11,12 +15,15 @@ public class HospedeService {
         this.hospedeRepository = hospedeRepository;
     }
 
-    public String createHospede(Hospede hospede) {
-        if (!validateHospede(hospede)) {
-            return String.format("Hóspede com CPF %s já cadastrado!", hospede.getCpf());
+    public void createHospede(Hospede hospede) {
+        if (validateHospede(hospede)) {
+            throw new HospedeAlreadyExistsException(HOSPEDE_JA_EXISTE);
         }
         hospedeRepository.save(hospede);
-        return "Hóspede cadastrado com sucesso!";
+    }
+
+    public List<Hospede> getAll() {
+        return hospedeRepository.findAll();
     }
 
     public void deleteHospede(String cpf) {
@@ -24,13 +31,6 @@ public class HospedeService {
     }
 
     private boolean validateHospede(Hospede hospede) {
-        boolean isValid = false;
-        try {
-            hospedeRepository.findById(hospede.getCpf());
-            isValid = true;
-        }catch (HospedeNotFoundException _) {
-
-        }
-        return isValid;
+        return hospedeRepository.existsById(hospede.getCpf());
     }
 }

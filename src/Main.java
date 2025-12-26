@@ -8,8 +8,9 @@ void main() {
     while(!app.getAppState()) {
         try {
             app.menuUsuario();
-        }catch (OpcaoInvalidaException | InvalidReservaException | HotelCapacityException exp) {
+        } catch (OpcaoInvalidaException | InvalidReservaException | HotelCapacityException exp) {
             System.out.println(exp.getMessage());
         }
     }
+    app.menuAdmin();
 }
