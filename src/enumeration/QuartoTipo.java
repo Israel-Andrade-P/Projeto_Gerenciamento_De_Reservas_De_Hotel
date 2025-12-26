@@ -5,6 +5,13 @@ public enum QuartoTipo {
     LUXO(100.0),
     PRESIDENCIAL(300.0);
 
+    private final double preco;
+
     QuartoTipo(double preco) {
+        this.preco = preco;
+    }
+
+    public double getPreco() {
+        return preco;
     }
 }

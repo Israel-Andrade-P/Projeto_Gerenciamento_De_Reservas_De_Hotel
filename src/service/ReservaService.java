@@ -1,23 +1,33 @@
 package service;
 
+import exception.HotelCapacityException;
 import exception.InvalidReservaException;
 import model.Reserva;
-import repository.ReservaRepository;
+import repository.Repository;
+import repository.impl.ReservaRepository;
 
 import java.util.List;
 
-public class ReservaService {
-    private ReservaRepository reservaRepository;
+import static constants.Constants.*;
+import static java.util.Comparator.comparing;
 
-    public ReservaService(ReservaRepository reservaRepository) {
+public class ReservaService {
+    private final Repository<Reserva, String> reservaRepository;
+
+    public ReservaService(Repository<Reserva, String> reservaRepository) {
         this.reservaRepository = reservaRepository;
     }
 
     public void addReserva(Reserva reserva) {
-        if (!ValidarReserva(reserva)) {
-            throw new InvalidReservaException("Reserva tem que ter pelo menos uma diária");
+        ReservaRepository reservaRepo = (ReservaRepository) reservaRepository;
+        if (reservaRepo.getCapacity() > 10) {
+            throw new HotelCapacityException(HOTEL_LOTADO);
         }
-        reservaRepository.saveReserva(reserva);
+        if (!ValidarReserva(reserva)) {
+            throw new InvalidReservaException(RSERVA_DIARIA_INVALIDA);
+        }
+
+        reservaRepository.save(reserva);
     }
 
     public void cancelaReserva(String reservaId) {
@@ -25,7 +35,11 @@ public class ReservaService {
     }
 
     public List<Reserva> pegarReservasPorCpf(String cpf) {
-        return reservaRepository.findByCpf(cpf);
+        List<Reserva> reservas = reservaRepository.findAll(cpf).stream().sorted(comparing(Reserva::getNumeroDias).reversed()).toList();
+        if (reservas.isEmpty()) {
+            throw new InvalidReservaException(RESERVA_NAO_ENCONTRADA);
+        }
+        return reservas;
     }
 
     private boolean ValidarReserva(Reserva reserva) {

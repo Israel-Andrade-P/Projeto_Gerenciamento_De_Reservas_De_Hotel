@@ -2,12 +2,12 @@ package service;
 
 import exception.HospedeNotFoundException;
 import model.Hospede;
-import repository.HospedeRepository;
+import repository.Repository;
 
 public class HospedeService {
-    private HospedeRepository hospedeRepository;
+    private final Repository<Hospede, String> hospedeRepository;
 
-    public HospedeService(HospedeRepository hospedeRepository) {
+    public HospedeService(Repository<Hospede, String> hospedeRepository) {
         this.hospedeRepository = hospedeRepository;
     }
 
@@ -15,17 +15,18 @@ public class HospedeService {
         if (!validateHospede(hospede)) {
             return String.format("Hóspede com CPF %s já cadastrado!", hospede.getCpf());
         }
+        hospedeRepository.save(hospede);
         return "Hóspede cadastrado com sucesso!";
     }
 
     public void deleteHospede(String cpf) {
-        hospedeRepository.deleteByCpf(cpf);
+        hospedeRepository.deleteById(cpf);
     }
 
     private boolean validateHospede(Hospede hospede) {
         boolean isValid = false;
         try {
-            hospedeRepository.getByCpf(hospede.getCpf());
+            hospedeRepository.findById(hospede.getCpf());
             isValid = true;
         }catch (HospedeNotFoundException _) {
 

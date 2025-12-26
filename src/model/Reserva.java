@@ -2,7 +2,9 @@ package model;
 
 import enumeration.QuartoTipo;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class Reserva {
@@ -10,14 +12,25 @@ public class Reserva {
     private final Hospede hospede;
     private QuartoTipo tipo;
     private int numeroDias;
-    private final LocalDateTime dataDoCadastro;
+    private final String dataDoCadastro;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public Reserva(Hospede hospede, QuartoTipo tipo, int numeroDias, LocalDateTime dataDoCadastro) {
+    public Reserva(Hospede hospede, QuartoTipo tipo, int numeroDias) {
         id = UUID.randomUUID().toString();
+        dataDoCadastro = LocalDate.now(ZoneId.of("America/Sao_Paulo")).format(formatter);
         this.hospede = hospede;
         this.tipo = tipo;
         this.numeroDias = numeroDias;
-        this.dataDoCadastro = dataDoCadastro;
+    }
+
+    public Reserva(Hospede hospede) {
+        this.hospede = hospede;
+        id = UUID.randomUUID().toString();
+        dataDoCadastro = LocalDate.now(ZoneId.of("America/Sao_Paulo")).format(formatter);
+    }
+
+    public double getTotalCost() {
+        return tipo.getPreco() * numeroDias;
     }
 
     public String getId() {
@@ -44,7 +57,7 @@ public class Reserva {
         this.numeroDias = numeroDias;
     }
 
-    public LocalDateTime getDataDoCadastro() {
+    public String getDataDoCadastro() {
         return dataDoCadastro;
     }
 }

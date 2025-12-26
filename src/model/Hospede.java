@@ -3,13 +3,15 @@ package model;
 public class Hospede {
     private String nome;
     private String sobrenome;
-    private final String cpf;
+    private String cpf;
 
     public Hospede(String nome, String sobrenome, String cpf) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.cpf = cpf;
     }
+
+    public Hospede() {}
 
     public String getNome() {
         return nome;
@@ -29,6 +31,10 @@ public class Hospede {
 
     public String getCpf() {
         return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public String getFullName() {
