@@ -16,9 +16,6 @@ public class HospedeService {
     }
 
     public void createHospede(Hospede hospede) {
-        if (validateHospede(hospede)) {
-            throw new HospedeAlreadyExistsException(HOSPEDE_JA_EXISTE);
-        }
         hospedeRepository.save(hospede);
     }
 

@@ -7,7 +7,7 @@ void main() {
         try {
             app.menuUsuario();
         } catch (OpcaoInvalidaException | InvalidReservaException |
-                 ReservaNotFoundException | HospedeAlreadyExistsException | HotelCapacityException exp) {
+                 ReservaNotFoundException | HotelCapacityException exp) {
             System.out.println(exp.getMessage());
         }
     }
