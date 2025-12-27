@@ -1,6 +1,4 @@
-import exception.HotelCapacityException;
-import exception.InvalidReservaException;
-import exception.OpcaoInvalidaException;
+import exception.*;
 import menu.AppInterface;
 
 void main() {
@@ -8,9 +6,15 @@ void main() {
     while(!app.getAppState()) {
         try {
             app.menuUsuario();
-        } catch (OpcaoInvalidaException | InvalidReservaException | HotelCapacityException exp) {
+        } catch (OpcaoInvalidaException | InvalidReservaException |
+                 ReservaNotFoundException | HospedeAlreadyExistsException | HotelCapacityException exp) {
             System.out.println(exp.getMessage());
         }
     }
-    app.menuAdmin();
+    app.setAppState();
+    //Menu disponível apenas para admins
+    while ((!app.getAppState())) {
+        app.menuAdmin();
+    }
+
 }

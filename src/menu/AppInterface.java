@@ -1,6 +1,8 @@
 package menu;
 
+import constants.Constants;
 import enumeration.QuartoTipo;
+import exception.InvalidReservaException;
 import exception.OpcaoInvalidaException;
 import model.Hospede;
 import model.Reserva;
@@ -33,16 +35,22 @@ public class AppInterface {
     }
 
     public void menuAdmin() {
+        System.out.println("Bem vindo Admin!");
         System.out.println("MENU PRINCIPAL");
         System.out.println("----------------");
         System.out.println("Listar hóspedes -          1");
         System.out.println("Listar reservas -          2");
+        System.out.println("Sair -                     3");
         System.out.print("Digite o número da opção que deseja realizar: ");
         processarAdmin(sc.nextLine());
     }
 
     public boolean getAppState() {
         return isDone;
+    }
+
+    public void setAppState() {
+        isDone = !isDone;
     }
 
     private void processar(String escolha) {
@@ -59,6 +67,7 @@ public class AppInterface {
         switch (escolha) {
             case "1" -> listarHospedes();
             case "2" -> listarReservas();
+            case "3" -> isDone = true;
             default -> throw new OpcaoInvalidaException(OPCAO_INVALIDA);
         }
     }
@@ -80,9 +89,16 @@ public class AppInterface {
         System.out.println("Luxo(R$100) -             2");
         System.out.println("Presidencial(R$300) -     3");
         reserva.setTipo(getQuartoTipo(sc.nextLine()));
+
         System.out.print("Quantas diárias? ");
+        while (!sc.hasNextInt()) {
+            System.out.println("Favor digitar um número de diárias válido");
+            sc.next();
+        }
         reserva.setNumeroDias(sc.nextInt());
         sc.nextLine();
+        if (!reservaService.ValidarReserva(reserva)) throw new InvalidReservaException(Constants.RSERVA_DIARIA_INVALIDA);
+
         System.out.printf("Custo total: R$%.2f\nDeseja confirmar a reserva? (s / n) ", reserva.getTotalCost());
         String out = sc.nextLine();
         if (out.equalsIgnoreCase("n")) {

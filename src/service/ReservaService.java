@@ -46,7 +46,7 @@ public class ReservaService {
         return reservaRepository.findAll();
     }
 
-    private boolean ValidarReserva(Reserva reserva) {
+    public boolean ValidarReserva(Reserva reserva) {
         return reserva.getNumeroDias() > 0;
     }
 }
